@@ -2,16 +2,24 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Client extends Personne {
-    private String numPasseport;
-    private Timestamp cumulHeureVol;
+    public int idPersonne;
+    public String numPasseport;
+    public float cumulHeureVol;
     private List<Reduction> reducs;
-
+    public static DAOHelper<Client> clientDAOHelper = new DAOHelper<>(Client.class);
 
 
     public Client() {
         super();
     }
 
+    public int getIdPersonne(){
+        return idPersonne;
+    }
+    public void setIdPersonne(int idPersonne){
+       this.idPersonne=idPersonne;
+
+    }
     public String getNumPasseport() {
         return numPasseport;
     }
@@ -20,11 +28,11 @@ public class Client extends Personne {
         this.numPasseport = numPasseport;
     }
 
-    public Timestamp getCumulHeureVol() {
+    public float getCumulHeureVol() {
         return cumulHeureVol;
     }
 
-    public void setCumulHeureVol(Timestamp cumulHeureVol) {
+    public void setCumulHeureVol(float cumulHeureVol) {
         this.cumulHeureVol = cumulHeureVol;
     }
 

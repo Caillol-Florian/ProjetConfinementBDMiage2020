@@ -1,19 +1,19 @@
-drop table if exists Vol;
-drop table if exists NumeroVol;
-drop table if exists Avion;
-drop table if exists Place;
-drop table if exists Modele;
-drop table if exists PiloteModele;
-drop table if exists Personne;
-drop table if exists Reservation;
-drop table if exists Client;
-drop table if exists Personnel;
-drop table if exists Pilote;
-drop table if exists Hotesse;
-drop table if exists Langue;
-drop table if exists LangueHotesse;
-drop table if exists Reduction;
-drop table if exists VolPersonnel;
+drop table if exists Vol CASCADE;
+drop table if exists NumeroVol CASCADE;
+drop table if exists Avion CASCADE;
+drop table if exists Place CASCADE;
+drop table if exists Modele CASCADE;
+drop table if exists PiloteModele CASCADE;
+drop table if exists Personne CASCADE;
+drop table if exists Reservation CASCADE;
+drop table if exists Client CASCADE;
+drop table if exists Personnel CASCADE;
+drop table if exists Pilote CASCADE;
+drop table if exists Hotesse CASCADE;
+drop table if exists Langue CASCADE;
+drop table if exists LangueHotesse CASCADE;
+drop table if exists Reduction CASCADE;
+drop table if exists VolPersonnel CASCADE;
 
 
 -- CREATION DES TABLES ET PRIMARY KEY SIMPLES
@@ -68,7 +68,7 @@ create table Personne (
 create table Client (
 	idPersonne integer primary key,
 	numPasseport varchar(20) not null,
-	cumulHeureVol timestamp not null
+	cumulHeureVol float not null
 	);
 
 create table Personnel (
