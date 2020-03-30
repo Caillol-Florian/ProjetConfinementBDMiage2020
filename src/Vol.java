@@ -2,16 +2,17 @@ import java.util.Date;
 import java.util.List;
 
 public class Vol {
-    private int idVol;
-    private int numVol;
-    private String aeroportDepart;
-    private String aeroportArrivee;
-    private Date horaireDepart;
-    private String duree;
-    private int distance;
-    private Avion avion;
-    private boolean termine;
-    private List<Personnel> personnel;
+    public int idVol;
+    public int numVol;
+    public String aeroportDepart;
+    public String aeroportArrivee;
+    public Date horaireDepart;
+    public String duree;
+    public int distance;
+    public Avion numAvion;
+    public boolean termine;
+    public List<Personnel> personnel;
+    public static DAOHelper<Vol> volDAOHelper = new DAOHelper<>(Vol.class);
 
     public int getIdVol() {
         return idVol;
@@ -70,11 +71,11 @@ public class Vol {
     }
 
     public Avion getAvion() {
-        return avion;
+        return numAvion;
     }
 
     public void setAvion(Avion avion) {
-        this.avion = avion;
+        this.numAvion = avion;
     }
 
     public boolean isTermine() {

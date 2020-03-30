@@ -1,5 +1,5 @@
 public class Langue {
-    private String intitule;
+    public String intitule;
 
     public Langue(String intitule) {
         this.intitule = intitule;

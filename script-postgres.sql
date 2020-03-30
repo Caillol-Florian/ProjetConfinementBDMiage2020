@@ -81,7 +81,7 @@ create table Hotesse (
 
 create table Pilote (
 	numPersonnel integer primary key,
-	nbHeureTotal timestamp not null
+	nbHeureTotal float not null
 );
 
 create table Langue (
@@ -91,7 +91,7 @@ create table Langue (
 create table PiloteModele (
 	numPersonnel integer,
 	refModele varchar(20),
-	nbHeureVol timestamp not null
+	nbHeureVol float not null
 	);
 
 create table LangueHotesse (

@@ -1,7 +1,7 @@
 public class Reduction {
-    private int idReduc;
-    private Client client;
-    private boolean utilise;
+    public int idReduc;
+    public Client client;
+    public boolean utilise;
 
     public Reduction(int idReduc, Client client, boolean utilise) {
         this.idReduc = idReduc;

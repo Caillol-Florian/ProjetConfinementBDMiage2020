@@ -28,7 +28,7 @@ public class Test{
                 System.out.println("BD non initialisé");
             }
             Client client = Client.clientDAOHelper.findOne(1);
-            client.setPrenom("Florian");
+            System.out.println(client.nom);
         }catch (SQLException e){
             throw new Error("Problem",e);
         }

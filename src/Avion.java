@@ -1,10 +1,11 @@
 public class Avion {
-    private int numAvion;
-    private Modele modele;
+    public int numAvion;
+    public Modele refModele;
+    public static DAOHelper<Avion> avionDAOHelper = new DAOHelper<>(Avion.class);
 
     public Avion(int numAvion, Modele modele) {
         this.numAvion = numAvion;
-        this.modele = modele;
+        this.refModele = modele;
     }
 
     public int getNumAvion() {
@@ -16,10 +17,10 @@ public class Avion {
     }
 
     public Modele getModele() {
-        return modele;
+        return refModele;
     }
 
     public void setModele(Modele modele) {
-        this.modele = modele;
+        this.refModele = modele;
     }
 }

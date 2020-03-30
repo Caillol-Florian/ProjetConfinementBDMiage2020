@@ -1,21 +1,20 @@
-import java.sql.Timestamp;
 import java.util.List;
 
 public class Pilote extends Personnel{
-    private Timestamp nbHeureVol;
-    private List<PiloteModele> modelesPilotables;
+    public float nbHeureVol;
+    public List<PiloteModele> modelesPilotables;
 
-    public Pilote(Timestamp nbHeureVol, List<PiloteModele> modeles) {
+    public Pilote(float nbHeureVol, List<PiloteModele> modeles) {
         super();
         this.nbHeureVol = nbHeureVol;
         this.modelesPilotables = modeles;
     }
 
-    public Timestamp getNbHeureVol() {
+    public float getNbHeureVol() {
         return nbHeureVol;
     }
 
-    public void setNbHeureVol(Timestamp nbHeureVol) {
+    public void setNbHeureVol(float nbHeureVol) {
         this.nbHeureVol = nbHeureVol;
     }
 

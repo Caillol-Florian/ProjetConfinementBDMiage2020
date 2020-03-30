@@ -1,19 +1,19 @@
 public abstract class Personne {
-    private int id;
-    private Sexe sexe;
-    private String nom;
-    private String prenom;
-    private String adresse;
-    private String codePostal;
-    private String ville;
-    private String pays;
+    public int idPersonne;
+    public Sexe sexe;
+    public String nom;
+    public String prenom;
+    public String adresse;
+    public String codePostal;
+    public String ville;
+    public String pays;
 
     public int getId() {
-        return id;
+        return idPersonne;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idPersonne = id;
     }
 
     public Sexe getSexe() {

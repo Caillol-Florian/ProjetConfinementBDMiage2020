@@ -1,7 +1,8 @@
 public class Modele {
-    private String refModele;
-    private int nbPilotes;
-    private int distMax;
+    public String refModele;
+    public int nbPilotes;
+    public int distMax;
+    public static DAOHelper<Modele> modeleDAOHelper = new DAOHelper<>(Modele.class);
 
     public String getRefModele() {
         return refModele;

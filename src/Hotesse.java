@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Hotesse extends Personnel{
-    private List<Langue> langues;
+    public List<Langue> langues;
 
     public Hotesse(List<Langue> langues) {
         super();

@@ -1,11 +1,12 @@
 import java.util.Date;
 
 public class Reservation {
-    private Vol Vol;
-    private Place place;
-    private Client iencli;
-    private Date dateReserv;
-    private int numReserv;
+    public Vol Vol;
+    public Place place;
+    public Client iencli;
+    public Date dateReserv;
+    public int numReserv;
+    public DAOHelper<Reservation> reservationDAOHelper = new DAOHelper<>(Reservation.class);
 
     public Vol getVol() {
         return Vol;

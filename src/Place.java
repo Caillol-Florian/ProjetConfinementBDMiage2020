@@ -1,11 +1,13 @@
 import java.util.Date;
 
 public class Place {
-    private int idPlace;
-    private Classe classe;
-    private String position;
-    private float prix;
-    private Date dateChgtPrix;
-    private Avion avion;
+
+    public int idPlace;
+    public Classe classe;
+    public String position;
+    public float prix;
+    public Date dateChgtPrix;
+    public Avion numAvion;
+    public static DAOHelper <Place> placeDAOHelper = new DAOHelper<>(Place.class);
 
 }

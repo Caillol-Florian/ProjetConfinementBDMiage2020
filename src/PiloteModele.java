@@ -1,9 +1,8 @@
-import java.sql.Timestamp;
 
 public class PiloteModele {
-    private int numPilote;
-    private String refModele;
-    private Timestamp nbHeureTotal;
+    public int numPilote;
+    public String refModele;
+    public float nbHeureTotal;
 
     public int getNumPilote() {
         return numPilote;
@@ -21,15 +20,15 @@ public class PiloteModele {
         this.refModele = refModele;
     }
 
-    public Timestamp getNbHeureTotal() {
+    public float getNbHeureTotal() {
         return nbHeureTotal;
     }
 
-    public void setNbHeureTotal(Timestamp nbHeureTotal) {
+    public void setNbHeureTotal(float nbHeureTotal) {
         this.nbHeureTotal = nbHeureTotal;
     }
 
-    public PiloteModele(int numPilote, String refModele, Timestamp nbHeureTotal) {
+    public PiloteModele(int numPilote, String refModele, float nbHeureTotal) {
         this.numPilote = numPilote;
         this.refModele = refModele;
         this.nbHeureTotal = nbHeureTotal;
