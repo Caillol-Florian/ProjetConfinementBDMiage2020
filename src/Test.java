@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.List;
 
 
 public class Test{
@@ -6,7 +7,7 @@ public class Test{
     public static void main(String[] args){
         String url = "jdbc:postgresql:projetBD";
         String username = "postgres";
-        String pass = "teo";
+        String pass = "flo";
         try{
             Class.forName("org.postgresql.Driver");
         }catch (java.lang.ClassNotFoundException e) {
@@ -27,7 +28,16 @@ public class Test{
             if(nbCol==8){
                 System.out.println("BD non initialisé");
             }
-            Client client = Client.clientDAOHelper.findOne(1);
+            Client client = Client.clientDAOHelper.findOne("1");
+            System.out.println(client.nom);
+
+           Sexe sexe = Sexe.fromString("F");
+           System.out.println(sexe.toString());
+            List<Client> clientList = Client.clientDAOHelper.findAll("numPasseport","OSEFMAx");
+            System.out.println(clientList.get(0).nom);
+            client.nom="Florian2";
+            Client.clientDAOHelper.save(client);
+            client = Client.clientDAOHelper.findOne("1");
             System.out.println(client.nom);
         }catch (SQLException e){
             throw new Error("Problem",e);
