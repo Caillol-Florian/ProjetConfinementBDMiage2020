@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -94,5 +95,52 @@ public class Vol {
         this.personnel = personnel;
     }
 
+    public static Vol createVol() {
+        Vol v = new Vol();
+        v.numVol = setNumVol();
+        System.out.println("\n Saisissez la ville de départ : ");
+        v.aeroportDepart = LectureClavier.lireChaine();
+        System.out.println("\n Saissisez la ville d'arrivée : ");
+        v.aeroportArrivee = LectureClavier.lireChaine();
+        System.out.println("\n Renseignez le jour et l'heure de départ (DD/MM/YYYY HH:MM)");
+        v.horaireDepart = Vol.formatDate(LectureClavier.lireChaine());
+        v.duree = LectureClavier.lireEntier("Saisir le temps de vol en minute : ");
+
+
+
+
+    }
+
+
+    private static ArrayList<Integer> getNumeroVol()  {
+        ArrayList<Integer> liste = new ArrayList<Integer>();
+        liste.add(1);
+        liste.add(2);
+        return liste;
+    }
+
+    private static int setNumVol(){
+        String s = "Choisissez le numéro de vol :\n ";
+        ArrayList<Integer> listeVols = Vol.getNumeroVol();
+        for(int i=0; i<getNumeroVol().size(); i++){
+            s+=  i+1 + "- " + listeVols.get(i) + "\n";
+        }
+        return LectureClavier.lireEntier(s);
+    }
+
+    private static Date formatDate(String s) {
+        String[] all = s.split(" ");
+        String[] date = all[0].split("/", 10);
+        String[] heure = all[1].split(":");
+
+        Date d = new Date();
+        d.setYear(Integer.parseInt(date[2]));
+        d.setMonth(Integer.parseInt(date[1]));
+        d.setDate(Integer.parseInt(date[0]));
+        d.setHours(Integer.parseInt(heure[0]));
+        d.setMinutes(Integer.parseInt(heure[1]));
+
+        return d;
+    }
 
 }

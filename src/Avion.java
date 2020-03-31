@@ -23,4 +23,5 @@ public class Avion {
     public void setModele(Modele modele) {
         this.refModele = modele;
     }
+
 }
