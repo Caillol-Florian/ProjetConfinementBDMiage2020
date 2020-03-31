@@ -43,4 +43,33 @@ public class Client extends Personne {
     public void setReducs(List<Reduction> reducs) {
         this.reducs = reducs;
     }
+
+
+    public void reserver(){
+      Reservation r = new Reservation();
+      System.out.println("Voici la liste des vols disponibles : ");
+      System.out.println(getsVols());
+      int numVol = LectureClavier.lireEntier("\n Veuillez choisir un vol en tapant son numéro (numVol) : ");
+      System.out.println("Voici la liste des places disponibles : ");
+      System.out.println(getsPlaces(numVol));
+      System.out.println("\n Veuillez choisir votre place :");
+      int numPlace = LectureClavier.lireEntier("\n Veuillez choisir une place en tapant son numéro idPlace : ");
+
+    }
+
+    private static ArrayList<Vol> getVols(){
+        ArrayList<Vol> vols = Vol.volDAOHelper.findAll();
+        return vols;
+    }
+
+    private static ArrayList<Place> getPlaces(int numVol){
+        ArrayList<Place> places = Place.placeDAOHelper.findAll("numVol",""+numVol);
+        return places;
+    }
+
+    public static Place choisirPlace(int numAvion) {
+      Place p = new Place();
+
+    }
+
 }

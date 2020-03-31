@@ -21,22 +21,22 @@ public class Test{
         }
         try{
             while(true){
-                System.out.println("=== BIENVENUE DANS L'INTERFACE DE CONFINEMENT AIRLINES ===\n");
-                System.out.println("> FONCTIONS DISPONIBLES : \n");
-                System.out.println(">> [Gestion Planification des Vols]");
-                System.out.println("1. Planifier un nouveau vol");
-                System.out.println("2. Supprimer un vol");
-                System.out.println("3. Modifier la planification d'un vol existant");
-                System.out.println("4. Confirmer qu'un vol est bien arrivÃ© Ã  destination");
-                System.out.println("5. Ajouter un personnel Ã  l'avion");
-                System.out.println("6. Supprimer un personnel Ã  l'avion\n");
-                System.out.println(">> [Gestion des RÃ©servations]");
-                System.out.println("7. Consulter les commandes d'un client");
-                System.out.println("8. Supprimer la rÃ©servation d'un client\n");
-                System.out.println(">> [Partie Cliente]");
-                System.out.println("9. Reserver un vol\n");
-                System.out.println(">> [Autre]");
-                System.out.println("10. Quitter l'application\n");
+              System.out.println("=== BIENVENUE DANS L'INTERFACE DE CONFINEMENT AIRLINES ===\n");
+              System.out.println("> FONCTIONS DISPONIBLES : \n");
+              System.out.println(">> [Gestion Planification des Vols]");
+              System.out.println("1. Planifier un nouveau vol");
+              System.out.println("2. Supprimer un vol");
+              System.out.println("3. Modifier la planification d'un vol existant");
+              System.out.println("4. Confirmer qu'un vol est bien arrivé à destination");
+              System.out.println("5. Ajouter un personnel à l'avion");
+              System.out.println("6. Supprimer un personnel à l'avion\n");
+              System.out.println(">> [Gestion des Reservations]");
+              System.out.println("7. Consulter les commandes d'un client");
+              System.out.println("8. Supprimer la réservation d'un client\n");
+              System.out.println(">> [Partie Cliente]");
+              System.out.println("9. Réserver un vol\n");
+              System.out.println(">> [Autre]");
+              System.out.println("10. Quitter l'application\n");
 
                 int numFonc = LectureClavier.lireEntier("Veuillez rentrer le numero correspondant a  la fonctionnalite choisie :");
                 while(numFonc < 1 || numFonc > 10){
@@ -71,8 +71,7 @@ public class Test{
                         // code block
                         break;
                     case 9:
-                        System.out.println("Voici la liste des vols disponibles : ");
-
+                        Client c = c.reserver();
                         break;
                     case 10:
                         System.exit(0);
