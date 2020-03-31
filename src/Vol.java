@@ -1,3 +1,9 @@
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,10 +13,10 @@ public class Vol {
     public int numVol;
     public String aeroportDepart;
     public String aeroportArrivee;
-    public Date horaireDepart;
-    public String duree;
+    public LocalDateTime horaireDepart;
+    public int duree;
     public int distance;
-    public Avion numAvion;
+    public int numAvion;
     public boolean termine;
     public List<Personnel> personnel;
     public static DAOHelper<Vol> volDAOHelper = new DAOHelper<>(Vol.class);
@@ -47,19 +53,19 @@ public class Vol {
         this.aeroportArrivee = aeroportArrivee;
     }
 
-    public Date getHoraireDepart() {
+    public LocalDateTime getHoraireDepart() {
         return horaireDepart;
     }
 
-    public void setHoraireDepart(Date horaireDepart) {
+    public void setHoraireDepart(LocalDateTime horaireDepart) {
         this.horaireDepart = horaireDepart;
     }
 
-    public String getDuree() {
+    public int getDuree() {
         return duree;
     }
 
-    public void setDuree(String duree) {
+    public void setDuree(int duree) {
         this.duree = duree;
     }
 
@@ -71,11 +77,11 @@ public class Vol {
         this.distance = distance;
     }
 
-    public Avion getAvion() {
+    public int getAvion() {
         return numAvion;
     }
 
-    public void setAvion(Avion avion) {
+    public void setAvion(int avion) {
         this.numAvion = avion;
     }
 
@@ -104,43 +110,170 @@ public class Vol {
         v.aeroportArrivee = LectureClavier.lireChaine();
         System.out.println("\n Renseignez le jour et l'heure de départ (DD/MM/YYYY HH:MM)");
         v.horaireDepart = Vol.formatDate(LectureClavier.lireChaine());
-        v.duree = LectureClavier.lireEntier("Saisir le temps de vol en minute : ");
+        v.duree = LectureClavier.lireEntier("\n Saisir le temps de vol en minute : ");
+        v.distance = LectureClavier.lireEntier("\n Saisir la distance de vol en kilomètres (arrondi a l'unité)");
+        v.numAvion = setNumAvion();
+        v.termine = false;
+        v.personnel = setPersonnel();
 
 
+        return v;
+    }
+
+    private static List<Personnel> setPersonnel(){
+        ArrayList<Personnel> psl = getAllPersonnel();
+        ArrayList<Personnel> retenus = new ArrayList<Personnel>();
+        System.out.println("\n Saisissez les numéros des hotesses souhaitées : (0 pour passer a la suite) : ");
+        for(Personnel p : psl){
+            if(p.getClass() != Hotesse.class)
+                continue;
+            System.out.println(p);
+        }
+
+        boolean over = false;
+        while(!over){
+            int i = LectureClavier.lireEntier("");
+            if(i == 0){
+                over = true;
+                continue;
+            }
+            for(Personnel p : psl){
+                if(i == p.idPersonne)
+                    retenus.add(p);
+            }
+        }
+
+        System.out.println("Saisissez les numéros des pilotes souhaités : (0 pour passer a la suite) : ");
+        for(Personnel p : psl){
+            if(p.getClass() != Pilote.class)
+                continue;
+            System.out.println(p);
+        }
+
+        over = false;
+        while(!over){
+            int i = LectureClavier.lireEntier("");
+            if(i == 0){
+                over = true;
+                continue;
+            }
+            for(Personnel p : psl){
+                if(i == p.idPersonne)
+                    retenus.add(p);
+            }
+        }
+
+        return retenus;
 
 
     }
 
+    private static ArrayList<Personnel> getAllPersonnel(){
+        ArrayList<Personnel> liste = new ArrayList<Personnel>();
+        try{
+            String query = "Select numpersonnel, nom, prenom from hotesse h join personne pe on h.numpersonnel = pe.idpersonne";
+            Statement stmt = Test.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Hotesse h = new Hotesse(new ArrayList<Langue>());
+                h.idPersonne = rs.getInt(1);
+                h.nom = rs.getString(2);
+                h.prenom = rs.getString(3);
+                Statement stmt2 = Test.conn.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("Select intituleLangue from languehotesse where numpersonnel=" + h.idPersonne + ";");
+                while(rs2.next()){
+                    h.langues.add(new Langue(rs2.getString(1)));
+                }
+                liste.add(h);
+             }
 
-    private static ArrayList<Integer> getNumeroVol()  {
+             query = "Select numpersonnel, pe.nom, pe.prenom from pilote p join personne pe on p.numPersonnel = pe.idpersonne";
+            Statement stmt3 = Test.conn.createStatement();
+            ResultSet rs3 = stmt3.executeQuery(query);
+            while(rs3.next()){
+                Pilote p = new Pilote(new ArrayList<PiloteModele>());
+                p.idPersonne = rs3.getInt(1);
+                p.nom = rs3.getString(2);
+                p.prenom = rs3.getString(3);
+                Statement stmt4 = Test.conn.createStatement();
+                ResultSet rs4 = stmt4.executeQuery("select refmodele, nbHeureVol from pilotemodele p  where numpersonnel=" + p.idPersonne + ";");
+                while (rs4.next()) {
+                    p.modelesPilotables.add(new PiloteModele(p.idPersonne, rs4.getString(1), rs4.getInt(2) ));
+                }
+                liste.add(p);
+            }
+
+        }catch(SQLException e){
+                System.out.println("Problème lors de la récupération des membres de personnel");
+        }
+
+        return liste;
+    }
+
+
+    private static ArrayList<Integer> getNumerosVol()  {
         ArrayList<Integer> liste = new ArrayList<Integer>();
-        liste.add(1);
-        liste.add(2);
+        try {
+            Statement stmt = Test.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select numvol from numerovol");
+            while(rs.next()){
+                liste.add(rs.getInt(1));
+            }
+        }catch(Exception e){ e.getMessage(); }
         return liste;
     }
 
     private static int setNumVol(){
         String s = "Choisissez le numéro de vol :\n ";
-        ArrayList<Integer> listeVols = Vol.getNumeroVol();
-        for(int i=0; i<getNumeroVol().size(); i++){
+        ArrayList<Integer> listeVols = Vol.getNumerosVol();
+        for(int i=0; i<getNumerosVol().size(); i++){
             s+=  i+1 + "- " + listeVols.get(i) + "\n";
         }
         return LectureClavier.lireEntier(s);
     }
 
-    private static Date formatDate(String s) {
+    private static int setNumAvion() {
+        String s = "\n Saisissez le numero de l'avion qui va effectuer ce vol : \n";
+        ArrayList<Integer> listeAvions = Vol.getNumerosAvion();
+        for(int i=0; i<getNumerosAvion().size(); i++){
+            s+=  i+1 + "- " + listeAvions.get(i) + "\n";
+        }
+        return LectureClavier.lireEntier(s);
+
+    }
+
+    private static ArrayList<Integer> getNumerosAvion(){
+        ArrayList<Integer> liste = new ArrayList<Integer>();
+        liste.add(5342);
+        liste.add(2323);
+        return liste;
+    }
+
+    private static LocalDateTime formatDate(String s) {
         String[] all = s.split(" ");
         String[] date = all[0].split("/", 10);
         String[] heure = all[1].split(":");
 
-        Date d = new Date();
-        d.setYear(Integer.parseInt(date[2]));
-        d.setMonth(Integer.parseInt(date[1]));
-        d.setDate(Integer.parseInt(date[0]));
-        d.setHours(Integer.parseInt(heure[0]));
-        d.setMinutes(Integer.parseInt(heure[1]));
+        LocalDateTime d = LocalDateTime.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), Integer.parseInt(heure[0]), Integer.parseInt(date[1]));
+
 
         return d;
+    }
+
+    public boolean firstDbInsert() {
+        boolean ret = false;
+        String query = "select ajoutVol(CAST(" + this.numVol + " as varchar), CAST(" + this.aeroportDepart +
+                " as varchar), CAST( " + this.aeroportArrivee + " as varchar), CAST( " + this.horaireDepart + " as Timestamp), " + this.distance + ", " + this.numAvion + ", " + this.duree + ");";
+        try{
+            Statement stmt = Test.conn.createStatement();
+            stmt.executeQuery(query);
+            ret = true;
+            }catch(SQLException e) {
+                System.out.println("Fail ajout : " + e.getMessage());
+            }
+
+        return ret;
+
     }
 
 }

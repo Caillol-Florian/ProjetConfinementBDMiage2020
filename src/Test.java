@@ -20,26 +20,11 @@ public class Test{
             throw new Error("Problem",e);
         }
         try{
-            String select = "SELECT * FROM Personne";
-            Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(select);
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int nbCol = metaData.getColumnCount();
-            if(nbCol==8){
-                System.out.println("BD non initialisé");
-            }
-            Client client = Client.clientDAOHelper.findOne("1");
-            System.out.println(client.nom);
+          Vol v = Vol.createVol();
+          v.firstDbInsert();
+          System.out.println("Réussi");
 
-           Sexe sexe = Sexe.fromString("F");
-           System.out.println(sexe.toString());
-            List<Client> clientList = Client.clientDAOHelper.findAll("numPasseport","OSEFMAx");
-            System.out.println(clientList.get(0).nom);
-            client.nom="Florian2";
-            Client.clientDAOHelper.save(client);
-            client = Client.clientDAOHelper.findOne("1");
-            System.out.println(client.nom);
-        }catch (SQLException e){
+        }catch (Exception e){
             throw new Error("Problem",e);
         }
     }
