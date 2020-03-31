@@ -7,7 +7,7 @@ public class Test{
     public static void main(String[] args){
         String url = "jdbc:postgresql:projetBD";
         String username = "postgres";
-        String pass = "flo";
+        String pass = "mine1405";
         try{
             Class.forName("org.postgresql.Driver");
         }catch (java.lang.ClassNotFoundException e) {
