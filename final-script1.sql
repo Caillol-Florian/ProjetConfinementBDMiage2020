@@ -5,7 +5,7 @@
 -- Dumped from database version 11.7
 -- Dumped by pg_dump version 11.7
 
--- Started on 2020-03-31 16:07:33
+-- Started on 2020-03-31 16:40:14
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 214 (class 1255 OID 16572)
+-- TOC entry 217 (class 1255 OID 16572)
 -- Name: actuheurepers(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -44,7 +44,31 @@ $$;
 ALTER FUNCTION public.actuheurepers() OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1255 OID 16575)
+-- TOC entry 231 (class 1255 OID 16788)
+-- Name: actuvolclient(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.actuvolclient() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+declare
+    clients record;
+begin
+    if old.termine = false and new.termine = true then
+        for clients in select idpersonne into clients from reservation r where r.idvol = new.idvol LOOP
+            update client c
+            set cumulheurevol = cumulheurevol + new.duree
+            where c.idpersonne = iencli.idpersonne;
+         end loop; 
+    end if;
+  end;
+  $$;
+
+
+ALTER FUNCTION public.actuvolclient() OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1255 OID 16575)
 -- Name: actuvolmodele(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -70,7 +94,7 @@ $$;
 ALTER FUNCTION public.actuvolmodele() OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1255 OID 16598)
+-- TOC entry 233 (class 1255 OID 16598)
 -- Name: ajoutvol(character varying, character varying, character varying, date, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -96,7 +120,7 @@ $$;
 ALTER FUNCTION public.ajoutvol(numvol character varying, dep character varying, arr character varying, hdep date, distance integer, numavion integer, duree integer) OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1255 OID 16582)
+-- TOC entry 232 (class 1255 OID 16582)
 -- Name: ajoutvol(character varying, character varying, character varying, date, integer, integer, numeric); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -121,6 +145,21 @@ $$;
 
 ALTER FUNCTION public.ajoutvol(numvol character varying, dep character varying, arr character varying, hdep date, distance integer, numavion integer, duree numeric) OWNER TO postgres;
 
+--
+-- TOC entry 214 (class 1259 OID 16790)
+-- Name: seq_avion; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seq_avion
+    START WITH 7
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_avion OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -131,7 +170,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.avion (
-    numavion integer NOT NULL,
+    numavion integer DEFAULT nextval('public.seq_avion'::regclass) NOT NULL,
     refmodele character varying(20) NOT NULL
 );
 
@@ -216,12 +255,27 @@ CREATE TABLE public.numerovol (
 ALTER TABLE public.numerovol OWNER TO postgres;
 
 --
+-- TOC entry 215 (class 1259 OID 16792)
+-- Name: seq_personne; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seq_personne
+    START WITH 31
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_personne OWNER TO postgres;
+
+--
 -- TOC entry 201 (class 1259 OID 16419)
 -- Name: personne; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.personne (
-    idpersonne integer NOT NULL,
+    idpersonne integer DEFAULT nextval('public.seq_personne'::regclass) NOT NULL,
     sexe character(1) NOT NULL,
     nom character varying(30) NOT NULL,
     prenom character varying(30) NOT NULL,
@@ -292,12 +346,27 @@ CREATE TABLE public.place (
 ALTER TABLE public.place OWNER TO postgres;
 
 --
+-- TOC entry 216 (class 1259 OID 16794)
+-- Name: seq_reduction; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seq_reduction
+    START WITH 11
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_reduction OWNER TO postgres;
+
+--
 -- TOC entry 210 (class 1259 OID 16458)
 -- Name: reduction; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.reduction (
-    idreduc integer NOT NULL,
+    idreduc integer DEFAULT nextval('public.seq_reduction'::regclass) NOT NULL,
     idpersonne integer NOT NULL,
     utilise boolean NOT NULL
 );
@@ -385,7 +454,7 @@ CREATE TABLE public.volpersonnel (
 ALTER TABLE public.volpersonnel OWNER TO postgres;
 
 --
--- TOC entry 2932 (class 0 OID 16404)
+-- TOC entry 2943 (class 0 OID 16404)
 -- Dependencies: 198
 -- Data for Name: avion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -399,7 +468,7 @@ INSERT INTO public.avion (numavion, refmodele) VALUES (6, 'AIRBUS A340');
 
 
 --
--- TOC entry 2936 (class 0 OID 16424)
+-- TOC entry 2947 (class 0 OID 16424)
 -- Dependencies: 202
 -- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -417,7 +486,7 @@ INSERT INTO public.client (idpersonne, numpasseport, cumulheurevol) VALUES (10, 
 
 
 --
--- TOC entry 2938 (class 0 OID 16434)
+-- TOC entry 2949 (class 0 OID 16434)
 -- Dependencies: 204
 -- Data for Name: hotesse; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -439,7 +508,7 @@ INSERT INTO public.hotesse (numpersonnel) VALUES (30);
 
 
 --
--- TOC entry 2940 (class 0 OID 16444)
+-- TOC entry 2951 (class 0 OID 16444)
 -- Dependencies: 206
 -- Data for Name: langue; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -455,7 +524,7 @@ INSERT INTO public.langue (intitulelangue) VALUES ('Chinois');
 
 
 --
--- TOC entry 2942 (class 0 OID 16452)
+-- TOC entry 2953 (class 0 OID 16452)
 -- Dependencies: 208
 -- Data for Name: languehotesse; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -491,7 +560,7 @@ INSERT INTO public.languehotesse (numpersonnel, intitulelangue) VALUES (30, 'Fra
 
 
 --
--- TOC entry 2934 (class 0 OID 16414)
+-- TOC entry 2945 (class 0 OID 16414)
 -- Dependencies: 200
 -- Data for Name: modele; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -502,7 +571,7 @@ INSERT INTO public.modele (refmodele, nbpilotes, distmax) VALUES ('AIRBUS A340',
 
 
 --
--- TOC entry 2931 (class 0 OID 16399)
+-- TOC entry 2942 (class 0 OID 16399)
 -- Dependencies: 197
 -- Data for Name: numerovol; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -530,7 +599,7 @@ INSERT INTO public.numerovol (numvol) VALUES ('8128');
 
 
 --
--- TOC entry 2935 (class 0 OID 16419)
+-- TOC entry 2946 (class 0 OID 16419)
 -- Dependencies: 201
 -- Data for Name: personne; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -568,7 +637,7 @@ INSERT INTO public.personne (idpersonne, sexe, nom, prenom, adresse, codepostal,
 
 
 --
--- TOC entry 2937 (class 0 OID 16429)
+-- TOC entry 2948 (class 0 OID 16429)
 -- Dependencies: 203
 -- Data for Name: personnel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -596,7 +665,7 @@ INSERT INTO public.personnel (numpersonnel, "nbHeureCumul") VALUES (11, 0);
 
 
 --
--- TOC entry 2939 (class 0 OID 16439)
+-- TOC entry 2950 (class 0 OID 16439)
 -- Dependencies: 205
 -- Data for Name: pilote; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -610,7 +679,7 @@ INSERT INTO public.pilote (numpersonnel) VALUES (16);
 
 
 --
--- TOC entry 2941 (class 0 OID 16449)
+-- TOC entry 2952 (class 0 OID 16449)
 -- Dependencies: 207
 -- Data for Name: pilotemodele; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -630,7 +699,7 @@ INSERT INTO public.pilotemodele (numpersonnel, refmodele, nbheurevol) VALUES (14
 
 
 --
--- TOC entry 2933 (class 0 OID 16409)
+-- TOC entry 2944 (class 0 OID 16409)
 -- Dependencies: 199
 -- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -674,7 +743,7 @@ INSERT INTO public.place (idplace, classe, "position", prix, datechgtprix, numav
 
 
 --
--- TOC entry 2944 (class 0 OID 16458)
+-- TOC entry 2955 (class 0 OID 16458)
 -- Dependencies: 210
 -- Data for Name: reduction; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -682,7 +751,7 @@ INSERT INTO public.place (idplace, classe, "position", prix, datechgtprix, numav
 
 
 --
--- TOC entry 2943 (class 0 OID 16455)
+-- TOC entry 2954 (class 0 OID 16455)
 -- Dependencies: 209
 -- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -692,7 +761,7 @@ INSERT INTO public.reservation (idvol, idpersonne, idplace, datereserv, numreser
 
 
 --
--- TOC entry 2930 (class 0 OID 16394)
+-- TOC entry 2941 (class 0 OID 16394)
 -- Dependencies: 196
 -- Data for Name: vol; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -702,7 +771,7 @@ INSERT INTO public.vol (idvol, numvol, aeroportdepart, aeroportarrivee, horaired
 
 
 --
--- TOC entry 2945 (class 0 OID 16463)
+-- TOC entry 2956 (class 0 OID 16463)
 -- Dependencies: 211
 -- Data for Name: volpersonnel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -726,7 +795,16 @@ INSERT INTO public.volpersonnel (idvol, numpersonnel) VALUES (71151004, 30);
 
 
 --
--- TOC entry 2953 (class 0 OID 0)
+-- TOC entry 2967 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: seq_avion; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.seq_avion', 7, false);
+
+
+--
+-- TOC entry 2968 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: seq_numreserv; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -735,7 +813,25 @@ SELECT pg_catalog.setval('public.seq_numreserv', 2, true);
 
 
 --
--- TOC entry 2954 (class 0 OID 0)
+-- TOC entry 2969 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: seq_personne; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.seq_personne', 31, false);
+
+
+--
+-- TOC entry 2970 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: seq_reduction; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.seq_reduction', 11, false);
+
+
+--
+-- TOC entry 2971 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: seq_vol; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -744,7 +840,7 @@ SELECT pg_catalog.setval('public.seq_vol', 1004, true);
 
 
 --
--- TOC entry 2760 (class 2606 OID 16408)
+-- TOC entry 2770 (class 2606 OID 16408)
 -- Name: avion avion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -753,7 +849,7 @@ ALTER TABLE ONLY public.avion
 
 
 --
--- TOC entry 2768 (class 2606 OID 16428)
+-- TOC entry 2778 (class 2606 OID 16428)
 -- Name: client client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -762,7 +858,7 @@ ALTER TABLE ONLY public.client
 
 
 --
--- TOC entry 2772 (class 2606 OID 16438)
+-- TOC entry 2782 (class 2606 OID 16438)
 -- Name: hotesse hotesse_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -771,7 +867,7 @@ ALTER TABLE ONLY public.hotesse
 
 
 --
--- TOC entry 2776 (class 2606 OID 16448)
+-- TOC entry 2786 (class 2606 OID 16448)
 -- Name: langue langue_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -780,7 +876,7 @@ ALTER TABLE ONLY public.langue
 
 
 --
--- TOC entry 2764 (class 2606 OID 16418)
+-- TOC entry 2774 (class 2606 OID 16418)
 -- Name: modele modele_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -789,7 +885,7 @@ ALTER TABLE ONLY public.modele
 
 
 --
--- TOC entry 2758 (class 2606 OID 16403)
+-- TOC entry 2768 (class 2606 OID 16403)
 -- Name: numerovol numerovol_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -798,7 +894,7 @@ ALTER TABLE ONLY public.numerovol
 
 
 --
--- TOC entry 2766 (class 2606 OID 16423)
+-- TOC entry 2776 (class 2606 OID 16423)
 -- Name: personne personne_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -807,7 +903,7 @@ ALTER TABLE ONLY public.personne
 
 
 --
--- TOC entry 2770 (class 2606 OID 16433)
+-- TOC entry 2780 (class 2606 OID 16433)
 -- Name: personnel personnel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -816,7 +912,7 @@ ALTER TABLE ONLY public.personnel
 
 
 --
--- TOC entry 2774 (class 2606 OID 16443)
+-- TOC entry 2784 (class 2606 OID 16443)
 -- Name: pilote pilote_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -825,7 +921,7 @@ ALTER TABLE ONLY public.pilote
 
 
 --
--- TOC entry 2780 (class 2606 OID 16469)
+-- TOC entry 2790 (class 2606 OID 16469)
 -- Name: languehotesse pk_languehotesse; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -834,7 +930,7 @@ ALTER TABLE ONLY public.languehotesse
 
 
 --
--- TOC entry 2778 (class 2606 OID 16467)
+-- TOC entry 2788 (class 2606 OID 16467)
 -- Name: pilotemodele pk_pilotemodele; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -843,7 +939,7 @@ ALTER TABLE ONLY public.pilotemodele
 
 
 --
--- TOC entry 2782 (class 2606 OID 16471)
+-- TOC entry 2792 (class 2606 OID 16471)
 -- Name: reservation pk_reservation; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -852,7 +948,7 @@ ALTER TABLE ONLY public.reservation
 
 
 --
--- TOC entry 2788 (class 2606 OID 16473)
+-- TOC entry 2798 (class 2606 OID 16473)
 -- Name: volpersonnel pk_volpersonnel; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -861,7 +957,7 @@ ALTER TABLE ONLY public.volpersonnel
 
 
 --
--- TOC entry 2762 (class 2606 OID 16413)
+-- TOC entry 2772 (class 2606 OID 16413)
 -- Name: place place_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -870,7 +966,7 @@ ALTER TABLE ONLY public.place
 
 
 --
--- TOC entry 2786 (class 2606 OID 16462)
+-- TOC entry 2796 (class 2606 OID 16462)
 -- Name: reduction reduction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -879,7 +975,7 @@ ALTER TABLE ONLY public.reduction
 
 
 --
--- TOC entry 2784 (class 2606 OID 16566)
+-- TOC entry 2794 (class 2606 OID 16566)
 -- Name: reservation uq_numreserv; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -888,7 +984,7 @@ ALTER TABLE ONLY public.reservation
 
 
 --
--- TOC entry 2756 (class 2606 OID 16398)
+-- TOC entry 2766 (class 2606 OID 16398)
 -- Name: vol vol_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -897,7 +993,7 @@ ALTER TABLE ONLY public.vol
 
 
 --
--- TOC entry 2807 (class 2620 OID 16573)
+-- TOC entry 2817 (class 2620 OID 16573)
 -- Name: vol actuheurepers; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -905,7 +1001,15 @@ CREATE TRIGGER actuheurepers AFTER UPDATE ON public.vol FOR EACH ROW EXECUTE PRO
 
 
 --
--- TOC entry 2808 (class 2620 OID 16576)
+-- TOC entry 2819 (class 2620 OID 16789)
+-- Name: vol actuvolclient; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER actuvolclient AFTER UPDATE ON public.vol FOR EACH ROW EXECUTE PROCEDURE public.actuvolclient();
+
+
+--
+-- TOC entry 2818 (class 2620 OID 16576)
 -- Name: vol actuvolmodele; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -913,7 +1017,7 @@ CREATE TRIGGER actuvolmodele AFTER UPDATE ON public.vol FOR EACH ROW EXECUTE PRO
 
 
 --
--- TOC entry 2791 (class 2606 OID 16484)
+-- TOC entry 2801 (class 2606 OID 16484)
 -- Name: avion fk_avionmodele; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -922,7 +1026,7 @@ ALTER TABLE ONLY public.avion
 
 
 --
--- TOC entry 2793 (class 2606 OID 16504)
+-- TOC entry 2803 (class 2606 OID 16504)
 -- Name: client fk_clientpersonne; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -931,7 +1035,7 @@ ALTER TABLE ONLY public.client
 
 
 --
--- TOC entry 2795 (class 2606 OID 16514)
+-- TOC entry 2805 (class 2606 OID 16514)
 -- Name: hotesse fk_hotessepersonnel; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -940,7 +1044,7 @@ ALTER TABLE ONLY public.hotesse
 
 
 --
--- TOC entry 2800 (class 2606 OID 16539)
+-- TOC entry 2810 (class 2606 OID 16539)
 -- Name: languehotesse fk_languehotessehote; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -949,7 +1053,7 @@ ALTER TABLE ONLY public.languehotesse
 
 
 --
--- TOC entry 2799 (class 2606 OID 16534)
+-- TOC entry 2809 (class 2606 OID 16534)
 -- Name: languehotesse fk_languehotesselang; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -958,7 +1062,7 @@ ALTER TABLE ONLY public.languehotesse
 
 
 --
--- TOC entry 2794 (class 2606 OID 16509)
+-- TOC entry 2804 (class 2606 OID 16509)
 -- Name: personnel fk_personnelpersonne; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -967,7 +1071,7 @@ ALTER TABLE ONLY public.personnel
 
 
 --
--- TOC entry 2797 (class 2606 OID 16524)
+-- TOC entry 2807 (class 2606 OID 16524)
 -- Name: pilotemodele fk_pilotemodelemod; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -976,7 +1080,7 @@ ALTER TABLE ONLY public.pilotemodele
 
 
 --
--- TOC entry 2798 (class 2606 OID 16529)
+-- TOC entry 2808 (class 2606 OID 16529)
 -- Name: pilotemodele fk_pilotemodelepil; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -985,7 +1089,7 @@ ALTER TABLE ONLY public.pilotemodele
 
 
 --
--- TOC entry 2796 (class 2606 OID 16519)
+-- TOC entry 2806 (class 2606 OID 16519)
 -- Name: pilote fk_pilotepersonnel; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -994,7 +1098,7 @@ ALTER TABLE ONLY public.pilote
 
 
 --
--- TOC entry 2792 (class 2606 OID 16544)
+-- TOC entry 2802 (class 2606 OID 16544)
 -- Name: place fk_placeavion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1003,7 +1107,7 @@ ALTER TABLE ONLY public.place
 
 
 --
--- TOC entry 2804 (class 2606 OID 16549)
+-- TOC entry 2814 (class 2606 OID 16549)
 -- Name: reduction fk_reductionclient; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1012,7 +1116,7 @@ ALTER TABLE ONLY public.reduction
 
 
 --
--- TOC entry 2802 (class 2606 OID 16494)
+-- TOC entry 2812 (class 2606 OID 16494)
 -- Name: reservation fk_reservationclient; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1021,7 +1125,7 @@ ALTER TABLE ONLY public.reservation
 
 
 --
--- TOC entry 2803 (class 2606 OID 16499)
+-- TOC entry 2813 (class 2606 OID 16499)
 -- Name: reservation fk_reservationplace; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1030,7 +1134,7 @@ ALTER TABLE ONLY public.reservation
 
 
 --
--- TOC entry 2801 (class 2606 OID 16489)
+-- TOC entry 2811 (class 2606 OID 16489)
 -- Name: reservation fk_reservationvol; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1039,7 +1143,7 @@ ALTER TABLE ONLY public.reservation
 
 
 --
--- TOC entry 2789 (class 2606 OID 16474)
+-- TOC entry 2799 (class 2606 OID 16474)
 -- Name: vol fk_volavion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1048,7 +1152,7 @@ ALTER TABLE ONLY public.vol
 
 
 --
--- TOC entry 2790 (class 2606 OID 16479)
+-- TOC entry 2800 (class 2606 OID 16479)
 -- Name: vol fk_volnumvol; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1057,7 +1161,7 @@ ALTER TABLE ONLY public.vol
 
 
 --
--- TOC entry 2806 (class 2606 OID 16559)
+-- TOC entry 2816 (class 2606 OID 16559)
 -- Name: volpersonnel fk_volpersonnelpers; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1066,7 +1170,7 @@ ALTER TABLE ONLY public.volpersonnel
 
 
 --
--- TOC entry 2805 (class 2606 OID 16554)
+-- TOC entry 2815 (class 2606 OID 16554)
 -- Name: volpersonnel fk_volpersonnelvol; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1074,7 +1178,7 @@ ALTER TABLE ONLY public.volpersonnel
     ADD CONSTRAINT fk_volpersonnelvol FOREIGN KEY (idvol) REFERENCES public.vol(idvol);
 
 
--- Completed on 2020-03-31 16:07:33
+-- Completed on 2020-03-31 16:40:14
 
 --
 -- PostgreSQL database dump complete

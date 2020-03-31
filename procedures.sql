@@ -63,3 +63,21 @@ create trigger actuVolModele AFTER UPDATE ON vol
 for each row execute procedure actuVolModele();
 
 
+create function actuVolClient() returns trigger as $actuVolClient$
+
+begin
+    if old.termine = false and new.termine = true then
+        for iencli in  select idpersonne  from reservation r where r.idvol = new.idvol LOOP
+            update client c
+            set cumulheurevol = cumulheurevol + new.duree
+            where c.idpersonne = iencli.idpersonne;
+         end loop;
+    end if;
+  end;
+  $actuVolClient$ language plpgsql;
+
+  create trigger actuVolClient after update on vol
+  for each row execute procedure actuVolClient();
+
+
+
