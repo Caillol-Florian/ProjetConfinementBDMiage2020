@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="318ba0dc-3483-4db0-ad08-28dffc1b2069" name="Default Changelist" comment="" />
+    <list default="true" id="6108b8ae-5f53-4306-a2b5-f116aa6d1115" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,93 +10,28 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1ZuBqS0028v6vUlLfFhTyur0CPP" />
+  <component name="ProjectId" id="1ZuG3B84XJw9qx6jP581HmIkTDn" />
   <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/postgresql-42.2.11.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RunManager" selected="Application.Test">
-    <configuration name="Interface" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Interface" />
-      <module name="ProjetConfinementBDMiage2020" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Test" />
-      <module name="ProjetConfinementBDMiage2020" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Test" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="318ba0dc-3483-4db0-ad08-28dffc1b2069" name="Default Changelist" comment="" />
-      <created>1585679289934</created>
+      <changelist id="6108b8ae-5f53-4306-a2b5-f116aa6d1115" name="Default Changelist" comment="" />
+      <created>1585681363796</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1585679289934</updated>
+      <updated>1585681363796</updated>
     </task>
     <servers />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="686" y="187" key="#Interface" timestamp="1585679455662">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="686" y="187" key="#Interface/0.0.1920.1040@0.0.1920.1040" timestamp="1585679455662" />
-    <state x="686" y="187" key="#Test" timestamp="1585679708232">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="686" y="187" key="#Test/0.0.1920.1040@0.0.1920.1040" timestamp="1585679708232" />
-    <state x="414" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585679567402">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="414" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585679567402" />
-    <state x="689" y="309" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585679707153">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="689" y="309" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585679707153" />
-    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1585679392086">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1585679392086" />
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom" timestamp="1585679719454">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1585679719454" />
-    <state width="1876" height="277" key="GridCell.Tab.0.center" timestamp="1585679719453">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1585679719453" />
-    <state width="1876" height="277" key="GridCell.Tab.0.left" timestamp="1585679719452">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1585679719452" />
-    <state width="1876" height="277" key="GridCell.Tab.0.right" timestamp="1585679719453">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1585679719453" />
-    <state x="440" y="96" key="SettingsEditor" timestamp="1585679603982">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="440" y="96" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1585679603982" />
   </component>
 </project>
