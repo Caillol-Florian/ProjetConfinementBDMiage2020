@@ -114,6 +114,7 @@ public class Vol {
         v.personnel = setPersonnel();
 
 
+
         return v;
     }
 
@@ -267,19 +268,24 @@ public class Vol {
     public boolean firstDbInsert() {
 
         boolean ret = false;
+        int id = -1;
         Timestamp t = Timestamp.valueOf(this.horaireDepart);
         String query = "select ajoutVol(CAST(" + this.numVol + " as varchar), CAST('" + this.aeroportDepart +
                 "' as varchar), CAST( '" + this.aeroportArrivee + "' as varchar), CAST( '" + t + "' as Timestamp), " + this.distance + ", " + this.numAvion + ", " + this.duree + ");";
         try{
             Statement stmt = Test.conn.createStatement();
-            stmt.executeQuery(query);
+
+           stmt.executeQuery(query);
             ret = true;
             }catch(SQLException e) {
                 System.out.println("Fail ajout : " + e.getMessage());
             }
 
+
         return ret;
 
     }
+
+
 
 }
