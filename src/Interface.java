@@ -1,28 +1,27 @@
 public class Interface {
     public static void main(String[] args) {
-        int numFonc = 0;
-        while (numFonc != 10){
+        while(true){
           System.out.println("=== BIENVENUE DANS L'INTERFACE DE CONFINEMENT AIRLINES ===\n");
           System.out.println("> FONCTIONS DISPONIBLES : \n");
           System.out.println(">> [Gestion Planification des Vols]");
           System.out.println("1. Planifier un nouveau vol");
           System.out.println("2. Supprimer un vol");
           System.out.println("3. Modifier la planification d'un vol existant");
-          System.out.println("4. Confirmer qu'un vol est bien arrivé à destination");
-          System.out.println("5. Ajouter un personnel à l'avion");
-          System.out.println("6. Supprimer un personnel à l'avion\n");
-          System.out.println(">> [Gestion des Réservations]");
+          System.out.println("4. Confirmer qu'un vol est bien arrivÃ© Ã  destination");
+          System.out.println("5. Ajouter un personnel Ã  l'avion");
+          System.out.println("6. Supprimer un personnel Ã  l'avion\n");
+          System.out.println(">> [Gestion des RÃ©servations]");
           System.out.println("7. Consulter les commandes d'un client");
-          System.out.println("8. Supprimer la réservation d'un client\n");
+          System.out.println("8. Supprimer la rÃ©servation d'un client\n");
           System.out.println(">> [Partie Cliente]");
-          System.out.println("9. Réserver un vol\n");
+          System.out.println("9. Reserver un vol\n");
           System.out.println(">> [Autre]");
           System.out.println("10. Quitter l'application\n");
 
-          int numFonc = LectureClavier.lireEntier("Veuillez rentrer le numéro correspondant à la fonctionnalité choisie :");
+          int numFonc = LectureClavier.lireEntier("Veuillez rentrer le numero correspondant a  la fonctionnalite choisie :");
           while(numFonc < 1 || numFonc > 10){
-              System.out.println("Numéro invalide !");
-              numFonc = LectureClavier.lireEntier("Veuillez rentrer à nouveau le numéro correspondant à la fonctionnalité choisie :");
+              System.out.println("Numero invalide !");
+              numFonc = LectureClavier.lireEntier("Veuillez rentrer a nouveau le numero correspondant a la fonctionnalite choisie :");
           }
           switch(numFonc) {
               case 1:
@@ -50,14 +49,15 @@ public class Interface {
                   // code block
                   break;
               case 9:
-                  // code block
+                  System.out.println("Voici la liste des vols disponibles : ");
+
                   break;
               case 10:
-                  // code block
+                  System.exit(0);
                   break;
               default:
                   break;
           }
-        }
+      }
     }
 }
