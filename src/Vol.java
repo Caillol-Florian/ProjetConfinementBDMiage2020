@@ -1,7 +1,4 @@
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -227,8 +224,9 @@ public class Vol {
         String s = "Choisissez le numéro de vol :\n ";
         ArrayList<Integer> listeVols = Vol.getNumerosVol();
         for(int i=0; i<getNumerosVol().size(); i++){
-            s+=  i+1 + "- " + listeVols.get(i) + "\n";
+            s+= listeVols.get(i) + "\n";
         }
+
         return LectureClavier.lireEntier(s);
     }
 
@@ -236,7 +234,7 @@ public class Vol {
         String s = "\n Saisissez le numero de l'avion qui va effectuer ce vol : \n";
         ArrayList<Integer> listeAvions = Vol.getNumerosAvion();
         for(int i=0; i<getNumerosAvion().size(); i++){
-            s+=  i+1 + "- " + listeAvions.get(i) + "\n";
+            s+=  listeAvions.get(i) + "\n";
         }
         return LectureClavier.lireEntier(s);
 
@@ -244,8 +242,14 @@ public class Vol {
 
     private static ArrayList<Integer> getNumerosAvion(){
         ArrayList<Integer> liste = new ArrayList<Integer>();
-        liste.add(5342);
-        liste.add(2323);
+        try{
+            Statement stmt = Test.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select numavion from avion");
+            while(rs.next()){
+                liste.add(rs.getInt(1));
+            }
+        }catch(SQLException e) { e.getMessage(); }
+
         return liste;
     }
 
@@ -261,9 +265,11 @@ public class Vol {
     }
 
     public boolean firstDbInsert() {
+
         boolean ret = false;
-        String query = "select ajoutVol(CAST(" + this.numVol + " as varchar), CAST(" + this.aeroportDepart +
-                " as varchar), CAST( " + this.aeroportArrivee + " as varchar), CAST( " + this.horaireDepart + " as Timestamp), " + this.distance + ", " + this.numAvion + ", " + this.duree + ");";
+        Timestamp t = Timestamp.valueOf(this.horaireDepart);
+        String query = "select ajoutVol(CAST(" + this.numVol + " as varchar), CAST('" + this.aeroportDepart +
+                "' as varchar), CAST( '" + this.aeroportArrivee + "' as varchar), CAST( '" + t + "' as Timestamp), " + this.distance + ", " + this.numAvion + ", " + this.duree + ");";
         try{
             Statement stmt = Test.conn.createStatement();
             stmt.executeQuery(query);
