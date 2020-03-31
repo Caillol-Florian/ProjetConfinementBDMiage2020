@@ -72,7 +72,8 @@ create table Client (
 	);
 
 create table Personnel (
-	numPersonnel integer primary key
+	numPersonnel integer primary key,
+	nbHeureCumul numeric(4,2)
 	);
 
 create table Hotesse (
